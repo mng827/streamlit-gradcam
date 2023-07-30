@@ -17,6 +17,7 @@ def preprocess_image(img: np.ndarray, mean: list[float], std: list[float]) -> to
     return transform(img.copy()).unsqueeze(0)
 
 
+@st.cache_data()
 def read_and_resize_img(filename, size):
     img = cv2.imread(filename)[:, :, ::-1]
     img = np.float32(img) / 255
@@ -24,7 +25,13 @@ def read_and_resize_img(filename, size):
     return img
 
 
-model = resnet50(weights=ResNet50_Weights.DEFAULT)
+@st.cache_resource()
+def load_model():
+    model = resnet50(weights=ResNet50_Weights.DEFAULT)
+    return model
+
+
+model = load_model()
 target_layers = [model.layer4[-1]]
 
 cam = GradCAM(model=model, target_layers=target_layers, use_cuda=False)
