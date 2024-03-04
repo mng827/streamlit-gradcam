@@ -34,7 +34,7 @@ def load_model():
 model = load_model()
 target_layers = [model.layer4[-1]]
 
-cam = GradCAM(model=model, target_layers=target_layers, use_cuda=False)
+cam = GradCAM(model=model, target_layers=target_layers)
 
 st.title("Explainable AI using GradCAM")
 
