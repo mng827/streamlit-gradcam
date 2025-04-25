@@ -64,19 +64,19 @@ sample_images = ["images/dog_cat.png",
 col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
 with col1:
     img = read_and_resize_img(sample_images[0], (224, 224))
-    st.image(img, use_column_width="always")
+    st.image(img, use_container_width=True)
     st.button("Select", "select_image0_button", use_container_width=True,
               on_click=set_image_selected, args=[0])
 
 with col2:
     img = read_and_resize_img(sample_images[1], (224, 224))
-    st.image(img, use_column_width="always")
+    st.image(img, use_container_width=True)
     st.button("Select", "select_image1_button", use_container_width=True,
               on_click=set_image_selected, args=[1])
 
 with col3:
     img = read_and_resize_img(sample_images[2], (224, 224))
-    st.image(img, use_column_width="always")
+    st.image(img, use_container_width=True)
     st.button("Select", "select_image2_button", use_container_width=True,
               on_click=set_image_selected, args=[2])
 
