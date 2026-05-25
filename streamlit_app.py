@@ -1,4 +1,5 @@
-import cv2
+import io
+from PIL import Image
 import numpy as np
 import streamlit as st
 import torch
@@ -19,10 +20,8 @@ def preprocess_image(img: np.ndarray, mean: list[float], std: list[float]) -> to
 
 @st.cache_data()
 def read_and_resize_img(filename, size):
-    img = cv2.imread(filename)[:, :, ::-1]
-    img = np.float32(img) / 255
-    img = cv2.resize(img, size)
-    return img
+    img = Image.open(filename).resize(size)
+    return np.array(img, np.float32) / 255.0
 
 
 @st.cache_resource()
@@ -90,10 +89,10 @@ if st.session_state['image_selected'] > -1:
     input_img = read_and_resize_img(sample_images[image_selected], (224, 224))
 
 elif file is not None:
-    nparr = np.frombuffer(file.getvalue(), np.byte)
-    input_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)[:, :, ::-1]
-    input_img = np.float32(input_img) / 255
-    input_img = cv2.resize(input_img, (224, 224))
+    input_bytes = io.BytesIO(file.getvalue())
+    input_img = Image.open(input_bytes)
+    input_img = input_img.resize((224, 224))
+    input_img = np.array(input_img, np.float32) / 255.0
     st.image(input_img)
 
 
